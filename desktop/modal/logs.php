@@ -21,7 +21,7 @@ if (!isConnect('admin')) {
   </thead>
   <tbody>
     <?php
-    $logs = nuki_smartlock::getLogs(init('id'));
+    $logs = nukiSmartLock::getLogs(init('id'));
     $trigger =  array(
       '0' => 'Application nuki',
       '1' => 'Manuel',
@@ -74,7 +74,7 @@ if (!isConnect('admin')) {
     
     foreach ($logs as $log) {
       $log['date']=strtotime($log['date']);
-      $eqLogic = nuki_smartlock::byNukiWebId($log['smartlockId']);
+      $eqLogic = nukiSmartLock::byNukiWebId($log['smartlockId']);
       if (is_object($eqLogic)) {
         $link = $eqLogic->getLinkToConfiguration();
         $name = $eqLogic->getHumanName(true);

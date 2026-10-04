@@ -25,28 +25,28 @@ try {
   }
 
   if (init('action') == 'searchnukiDevices') {
-    nuki_smartlock::searchnukiDevices();
+    nukiSmartLock::searchnukiDevices();
     ajax::success();
   }
  
 
   if (init('action') == 'authDelete') {
-    nuki_smartlock::authDelete(init('id'), init('auth'));
+    nukiSmartLock::authDelete(init('id'), init('auth'));
     ajax::success();
   }
 
   
 if (init('action') == 'authPin') {
 
-    $avant = nuki_smartlock::getAuths(init('id'));
+    $avant = nukiSmartLock::getAuths(init('id'));
 
     $idsAvant = array();
     foreach ($avant as $auth) {
         $idsAvant[] = $auth['id'];
-        nuki_smartlock::add_log('info', $auth);
+        nukiSmartLock::add_log('info', $auth);
     }
 
-    nuki_smartlock::authPin(
+    nukiSmartLock::authPin(
         init('id'),
         init('name'),
         init('pin')
@@ -55,7 +55,7 @@ if (init('action') == 'authPin') {
 
       sleep(1);
 
-      $apres = nuki_smartlock::getAuths(init('id'));
+      $apres = nukiSmartLock::getAuths(init('id'));
 
       foreach ($apres as $auth) {
         if (!in_array($auth['id'], $idsAvant)) {

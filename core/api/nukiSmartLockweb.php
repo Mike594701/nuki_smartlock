@@ -19,12 +19,12 @@
 
 
 require_once dirname(__FILE__) . "/../../../../core/php/core.inc.php";
-if (!jeedom::apiAccess(init('apikey'), 'nuki_smartlock')) {
+if (!jeedom::apiAccess(init('apikey'), 'nukiSmartLock')) {
 	echo 'Clef API non valide, vous n\'etes pas autorisé à effectuer cette action';
 	die();
 }
 
 $message = json_decode(file_get_contents('php://input'),true);
-log::add('nuki_smartlock', 'info', 'Evenement : ' . $message['nukiId']);
-nuki_smartlock::updateDevice($message);
-nuki_smartlock::updateTrigger($message['nukiId']);
+log::add('nukiSmartLock', 'info', 'Evenement : ' . $message['nukiId']);
+nukiSmartLock::updateDevice($message);
+nukiSmartLock::updateTrigger($message['nukiId']);

@@ -3,8 +3,8 @@
 if (!isConnect('admin')) {
   throw new Exception('{{401 - Accès non autorisé}}');
 }
-sendVarToJS('eqType', 'nuki_smartlock');
-$eqLogics = eqLogic::byType('nuki_smartlock');
+sendVarToJS('eqType', 'nukiSmartLock');
+$eqLogics = eqLogic::byType('nukiSmartLock');
 
 ?>
 
@@ -48,9 +48,9 @@ $eqLogics = eqLogic::byType('nuki_smartlock');
           $opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
           echo '<div class="eqLogicDisplayCard cursor ' . $opacity . '" data-eqLogic_id="' . $eqLogic->getId() . '">';
           if ($type = $eqLogic->getConfiguration('type')) {
-            echo '<img src="plugins/nuki_smartlock/core/config/devices/' . $type . '.png"/>';
+            echo '<img src="plugins/nukiSmartLock/core/config/devices/' . $type . '.png"/>';
           } else {
-            echo '<img src="plugins/nuki_smartlock/plugin_info/nuki_smartlock.png"/>';
+            echo '<img src="plugins/nukiSmartLock/plugin_info/nukiSmartLock.png"/>';
           }
           echo "<br>";
           echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
@@ -179,7 +179,7 @@ $eqLogics = eqLogic::byType('nuki_smartlock');
           </div>
           <div class="col-sm-3">
             <div>
-                <img id="nukiTypeImg" src="plugins/nuki_smartlock/plugin_info/nuki_smartlock_icon.png" style="max-width: 300px; height: auto;" />
+                <img id="nukiTypeImg" src="plugins/nukiSmartLock/plugin_info/nukiSmartLock_icon.png" style="max-width: 300px; height: auto;" />
             </div>
           </div>
         </div>
@@ -204,5 +204,5 @@ $eqLogics = eqLogic::byType('nuki_smartlock');
     </div>
   </div>
 </div>
-<?php include_file('desktop', 'nuki_smartlock', 'js', 'nuki_smartlock'); ?>
+<?php include_file('desktop', 'nukiSmartLock', 'js', 'nukiSmartLock'); ?>
 <?php include_file('core', 'plugin.template', 'js'); ?>

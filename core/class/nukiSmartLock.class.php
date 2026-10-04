@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
-class nuki_smartlock extends eqLogic{
+class nukiSmartLock extends eqLogic{
   public static function add_log($level = 'debug',$Log){
     if (is_array($Log)) $Log = json_encode($Log);
       $ligne = debug_backtrace(false, 2)[0]['line'];
@@ -13,7 +13,7 @@ class nuki_smartlock extends eqLogic{
     }else{
       $msg =  '(' . $ligne . '): '.$Log;
     }
-    log::add('nuki_smartlock' , $level,$msg);
+    log::add('nukiSmartLock' , $level,$msg);
   
   }
   public  function getNukiWebId(){
@@ -24,7 +24,7 @@ class nuki_smartlock extends eqLogic{
   }
 
   public static function byNukiWebId($id){
-    $eqLogics = self::byType('nuki_smartlock');
+    $eqLogics = self::byType('nukiSmartLock');
     foreach ($eqLogics as $eqLogic) {
       if ($eqLogic->getConfiguration('type') == 'doorsensor') {
         # Avoid selecting door sensors cause they don't really exist in the Nuki Web API
@@ -34,7 +34,7 @@ class nuki_smartlock extends eqLogic{
         return $eqLogic;
       }
     }
-    return eqLogic::byLogicalId($id, 'nuki_smartlock');
+    return eqLogic::byLogicalId($id, 'nukiSmartLock');
   }
 
   public static function getTriggers(){
@@ -114,9 +114,9 @@ class nuki_smartlock extends eqLogic{
 
   public static function callBridge($_uri) {
 
-    $ip    = config::byKey('bridge_ip', 'nuki_smartlock', '');
-    $port  = config::byKey('bridge_port', 'nuki_smartlock', '');
-    $token = config::byKey('api_token', 'nuki_smartlock', '');
+    $ip    = config::byKey('bridge_ip', 'nukiSmartLock', '');
+    $port  = config::byKey('bridge_port', 'nukiSmartLock', '');
+    $token = config::byKey('api_token', 'nukiSmartLock', '');
 
     // Vérification configuration
     if ($ip == '' || $port == '' || $token == '') {
@@ -169,7 +169,7 @@ class nuki_smartlock extends eqLogic{
     }
 
     return $json;
-}
+  }
   public static function getBridgeStatus(){
     return self::callBridge('list?');
   }
@@ -178,83 +178,79 @@ class nuki_smartlock extends eqLogic{
     return self::callBridge('log?');
   }
 
-    public static function updateTrigger($_id) {
+  public static function updateTrigger($_id) {
 
-        // Liste des triggers connus
-        $triggerList = self::getTriggers();
+      // Liste des triggers connus
+      $triggerList = self::getTriggers();
 
-        // Récupération de l'équipement Jeedom
-        $eqLogic = self::byNukiWebId($_id);
-        if (!is_object($eqLogic)) {
-            self::add_log('error', 'updateTrigger : aucun eqLogic trouvé pour ID ' . $_id);
-            return;
-        }
-
-        // Appel API Web pour récupérer le dernier log
-        $uri = 'smartlock/' . $eqLogic->getNukiWebId() . '/log';
-        $array = self::callWeb($uri);
-
-        if (!is_array($array) || !isset($array[0])) {
-            self::add_log('error', 'updateTrigger : réponse invalide de l’API Web');
-            return;
-        }
-
-        $entry = $array[0];
-
-        // Détermination du nom du trigger
-        if (!empty($entry['name'])) {
-            $triggerName = $entry['name'];
-        } elseif (isset($entry['trigger']) && isset($triggerList[$entry['trigger']])) {
-            $triggerName = $triggerList[$entry['trigger']];
-        } else {
-            $triggerName = 'Inconnu';
-        }
-
-        self::add_log('debug', 'Trigger Webhook : ' . $triggerName);
-
-        // Mise à jour de la commande Jeedom
-        $eqLogic->checkAndUpdateCmd('trigger', $triggerName);
-    }
-
-    
-    public static function getLogs($_id) {
-
-        // Cas : récupérer tous les logs
-        if ($_id == 'all') {
-            $uri = 'smartlock/log';
-            return self::callWeb($uri);
-        }
-
-        // Cas : récupérer les logs d’un équipement spécifique
-        $eqLogic = self::byNukiWebId($_id);
-        if (!is_object($eqLogic)) {
-            self::add_log('error', 'getLogs : aucun eqLogic trouvé pour ID ' . $_id);
-            return null;
-        }
-
-        $uri = 'smartlock/' . $eqLogic->getNukiWebId() . '/log';
-
-        $result = self::callWeb($uri);
-
-        if ($result === null) {
-            self::add_log('error', 'getLogs : réponse vide ou invalide pour ' . $uri);
-        }
-
-        return $result;
-    }
-    public static function getAuths($_id){
-      if ($_id == 'all') {
-        $uri = 'smartlock/auth';
-      } else {
-        $eqLogic = nuki_smartlock::byNukiWebId($_id);
-        $uri = 'smartlock/' . $eqLogic->getNukiWebId() . '/auth';
+      // Récupération de l'équipement Jeedom
+      $eqLogic = self::byNukiWebId($_id);
+      if (!is_object($eqLogic)) {
+          self::add_log('error', 'updateTrigger : aucun eqLogic trouvé pour ID ' . $_id);
+          return;
       }
-      return nuki_smartlock::callWeb($uri);
-    }
 
- public static function callWeb($_uri, $_type = 'get', $_post = '')
-{
-    $token = config::byKey('api_web', 'nuki_smartlock', '');
+      // Appel API Web pour récupérer le dernier log
+      $uri = 'smartlock/' . $eqLogic->getNukiWebId() . '/log';
+      $array = self::callWeb($uri);
+
+      if (!is_array($array) || !isset($array[0])) {
+          self::add_log('error', 'updateTrigger : réponse invalide de l’API Web');
+          return;
+      }
+
+      $entry = $array[0];
+
+      // Détermination du nom du trigger
+      if (!empty($entry['name'])) {
+          $triggerName = $entry['name'];
+      } elseif (isset($entry['trigger']) && isset($triggerList[$entry['trigger']])) {
+          $triggerName = $triggerList[$entry['trigger']];
+      } else {
+          $triggerName = 'Inconnu';
+      }
+
+      self::add_log('debug', 'Trigger Webhook : ' . $triggerName);
+
+      // Mise à jour de la commande Jeedom
+      $eqLogic->checkAndUpdateCmd('trigger', $triggerName);
+  }
+  public static function getLogs($_id) {
+
+      // Cas : récupérer tous les logs
+      if ($_id == 'all') {
+          $uri = 'smartlock/log';
+          return self::callWeb($uri);
+      }
+
+      // Cas : récupérer les logs d’un équipement spécifique
+      $eqLogic = self::byNukiWebId($_id);
+      if (!is_object($eqLogic)) {
+          self::add_log('error', 'getLogs : aucun eqLogic trouvé pour ID ' . $_id);
+          return null;
+      }
+
+      $uri = 'smartlock/' . $eqLogic->getNukiWebId() . '/log';
+
+      $result = self::callWeb($uri);
+
+      if ($result === null) {
+          self::add_log('error', 'getLogs : réponse vide ou invalide pour ' . $uri);
+      }
+
+      return $result;
+  }
+  public static function getAuths($_id){
+    if ($_id == 'all') {
+      $uri = 'smartlock/auth';
+    } else {
+      $eqLogic = nukiSmartLock::byNukiWebId($_id);
+      $uri = 'smartlock/' . $eqLogic->getNukiWebId() . '/auth';
+    }
+    return nukiSmartLock::callWeb($uri);
+  }
+  public static function callWeb($_uri, $_type = 'get', $_post = ''){
+    $token = config::byKey('api_web', 'nukiSmartLock', '');
 
     if ($token == '') {
         self::add_log('error', 'API Web non configurée');
@@ -403,38 +399,35 @@ class nuki_smartlock extends eqLogic{
 
         return null;
     }
-}
-    
+  }  
 
-  
-    public static function getConfig($_id) {
+  public static function getConfig($_id) {
 
-        // Cas : récupérer la configuration de tous les Smart Locks
-        if ($_id == 'all') {
-            $uri = 'smartlock';
-            return self::callWeb($uri);
-        }
+      // Cas : récupérer la configuration de tous les Smart Locks
+      if ($_id == 'all') {
+          $uri = 'smartlock';
+          return self::callWeb($uri);
+      }
 
-        // Cas : récupérer la configuration d’un Smart Lock spécifique
-        $eqLogic = self::byNukiWebId($_id);
-        if (!is_object($eqLogic)) {
-            self::add_log('error', 'getConfig : aucun eqLogic trouvé pour ID ' . $_id);
-            return null;
-        }
+      // Cas : récupérer la configuration d’un Smart Lock spécifique
+      $eqLogic = self::byNukiWebId($_id);
+      if (!is_object($eqLogic)) {
+          self::add_log('error', 'getConfig : aucun eqLogic trouvé pour ID ' . $_id);
+          return null;
+      }
 
-        $uri = 'smartlock/' . $eqLogic->getNukiWebId();
+      $uri = 'smartlock/' . $eqLogic->getNukiWebId();
 
-        $result = self::callWeb($uri);
+      $result = self::callWeb($uri);
 
-        if ($result === null) {
-            self::add_log('error', 'getConfig : réponse vide ou invalide pour ' . $uri);
-        }
+      if ($result === null) {
+          self::add_log('error', 'getConfig : réponse vide ou invalide pour ' . $uri);
+      }
 
-        return $result;
-    }
+      return $result;
+  }
 
- public static function authDelete($_id, $_auth)
-{
+  public static function authDelete($_id, $_auth){
     $eqLogic = self::byNukiWebId($_id);
 
     if (!is_object($eqLogic)) {
@@ -463,9 +456,8 @@ class nuki_smartlock extends eqLogic{
     }
 
     return $result;
-}
- public static function authPin($_id, $_name, $_pin)
-{
+  }
+  public static function authPin($_id, $_name, $_pin){
     // Vérification du PIN Nuki (6 chiffres)
     if (!preg_match('/^[0-9]{6}$/', $_pin)) {
         self::add_log(
@@ -534,47 +526,47 @@ class nuki_smartlock extends eqLogic{
     );
 
     return $result;
-}
+  }
 
   
-    public static function updateValues() {
+  public static function updateValues() {
 
-        // Récupération du statut du Bridge
-        $nukis = self::getBridgeStatus();
+    // Récupération du statut du Bridge
+    $nukis = self::getBridgeStatus();
 
-        if (!is_array($nukis)) {
-            self::add_log('error', 'updateValues : réponse invalide du Bridge');
-            return;
-        }
-
-        self::add_log('debug', 'BridgeStatus : ' . print_r($nukis, true));
-
-        foreach ($nukis as $nuki) {
-
-            if (!isset($nuki['lastKnownState']) || !is_array($nuki['lastKnownState'])) {
-                self::add_log('error', 'updateValues : lastKnownState manquant pour nukiId ' . ($nuki['nukiId'] ?? 'inconnu'));
-                continue;
-            }
-
-            // Ajout des infos nécessaires
-            $state = $nuki['lastKnownState'];
-            $state['nukiId'] = $nuki['nukiId'] ?? null;
-            $state['firmwareVersion'] = $nuki['firmwareVersion'] ?? null;
-
-            // Mise à jour de l’équipement
-            self::updateDevice($state);
-        }
+    if (!is_array($nukis)) {
+        self::add_log('error', 'updateValues : réponse invalide du Bridge');
+        return;
     }
 
+    self::add_log('debug', 'BridgeStatus : ' . print_r($nukis, true));
+
+    foreach ($nukis as $nuki) {
+
+        if (!isset($nuki['lastKnownState']) || !is_array($nuki['lastKnownState'])) {
+            self::add_log('error', 'updateValues : lastKnownState manquant pour nukiId ' . ($nuki['nukiId'] ?? 'inconnu'));
+            continue;
+        }
+
+        // Ajout des infos nécessaires
+        $state = $nuki['lastKnownState'];
+        $state['nukiId'] = $nuki['nukiId'] ?? null;
+        $state['firmwareVersion'] = $nuki['firmwareVersion'] ?? null;
+
+        // Mise à jour de l’équipement
+        self::updateDevice($state);
+    }
+  }
+
   
-    public static function updateDevice($_array){
+  public static function updateDevice($_array){
       self::add_log("debug", 'Update ' . print_r($_array, true));
       if (!isset($_array['nukiId'])) {
           self::add_log('error', 'updateDevice : nukiId manquant dans les données');
           return;
       }
 
-      $eqLogic = eqLogic::byLogicalId($_array['nukiId'], 'nuki_smartlock');
+      $eqLogic = eqLogic::byLogicalId($_array['nukiId'], 'nukiSmartLock');
       if (!is_object($eqLogic)) {
           self::add_log('error', 'updateDevice : aucun eqLogic pour nukiId ' . $_array['nukiId']);
           return;
@@ -654,7 +646,7 @@ class nuki_smartlock extends eqLogic{
 
           $statebinaryDoor = in_array($_array['doorsensorState'], array(2)) ? 1 : 0;
 
-          $eqDoor = self::byLogicalId('door-' . $_array['nukiId'], 'nuki_smartlock');
+          $eqDoor = self::byLogicalId('door-' . $_array['nukiId'], 'nukiSmartLock');
           if (!is_object($eqDoor)) {
               self::add_log('debug', 'updateDevice : aucun eqLogic door- pour nukiId ' . $_array['nukiId']);
               //return;
@@ -693,12 +685,12 @@ class nuki_smartlock extends eqLogic{
           continue;
       }
 
-      $eqLogic = self::byLogicalId($nuki['nukiId'], 'nuki_smartlock');
+      $eqLogic = self::byLogicalId($nuki['nukiId'], 'nukiSmartLock');
 
       // Création si inexistant
       if (!is_object($eqLogic)) {
         $eqLogic = new eqLogic();
-        $eqLogic->setEqType_name('nuki_smartlock');
+        $eqLogic->setEqType_name('nukiSmartLock');
         $eqLogic->setIsEnable(1);
         $eqLogic->setName($nuki['name']);
         $eqLogic->setLogicalId($nuki['nukiId']);
@@ -721,10 +713,10 @@ class nuki_smartlock extends eqLogic{
 
       // --- Capteur de porte ---
       if (isset($nuki['lastKnownState']['doorsensorState'])) {
-        $eqDoor = self::byLogicalId('door-' . $nuki['nukiId'], 'nuki_smartlock');
+        $eqDoor = self::byLogicalId('door-' . $nuki['nukiId'], 'nukiSmartLock');
         if (!is_object($eqDoor)) {
           $eqDoor = new eqLogic();
-          $eqDoor->setEqType_name('nuki_smartlock');
+          $eqDoor->setEqType_name('nukiSmartLock');
           $eqDoor->setIsEnable(1);
           $eqDoor->setName('Capteur Porte - ' . $nuki['name']);
           $eqDoor->setLogicalId('door-' . $nuki['nukiId']);
@@ -742,7 +734,7 @@ class nuki_smartlock extends eqLogic{
     }
 
     // --- Suppression des équipements absents du Bridge ---
-    $eqLogics = self::byType('nuki_smartlock');
+    $eqLogics = self::byType('nukiSmartLock');
     if (is_array($eqLogics) && count($eqLogics) > 0) {
       $idsBridge = array_column($nukis, 'nukiId');
       foreach ($eqLogics as $eqLogic) {
@@ -827,7 +819,7 @@ class nuki_smartlock extends eqLogic{
         }
       }
       if ($cmd == null || !is_object($cmd)) {
-        $cmd = new nuki_smartlockCmd();
+        $cmd = new nukiSmartLockCmd();
         $cmd->setEqLogic_id($this->getId());
         utils::a2o($cmd, $command);
         $cmd->save();
@@ -836,14 +828,14 @@ class nuki_smartlock extends eqLogic{
   }
 }
 
-class nuki_smartlockCmd extends cmd{
+class nukiSmartLockCmd extends cmd{
   public function execute($_options = null){
     $eqLogic = $this->getEqLogic();
    
     if (strpos($this->getLogicalId(), 'auth') !== false) {
        
       if (($this->getLogicalId() == 'authDisable') || ($this->getLogicalId() == 'authEnable')) {
-        nuki_smartlock::callWeb('smartlock/' . $eqLogic->getNukiWebId() . '/auth/' . $_options['select'], 'post', array($this->getConfiguration('request') => $this->getConfiguration('requestValue')));
+        nukiSmartLock::callWeb('smartlock/' . $eqLogic->getNukiWebId() . '/auth/' . $_options['select'], 'post', array($this->getConfiguration('request') => $this->getConfiguration('requestValue')));
       }
       if ($this->getLogicalId() == 'authMessage') {
         $conf = explode(',', $_options['title']);
@@ -874,28 +866,28 @@ class nuki_smartlockCmd extends cmd{
         if ($id == '') {
           return;
         }
-        nuki_smartlock::callWeb('smartlock/' . $eqLogic->getNukiWebId() . '/auth/' . $id, $mode, $data);
+        nukiSmartLock::callWeb('smartlock/' . $eqLogic->getNukiWebId() . '/auth/' . $id, $mode, $data);
         $eqLogic->fillAuthCmds();
       }
     } elseif ($this->getLogicalId() == 'unlatch_duree') {
       // Objet de la modif : permettre de modifier le temps d'ouverture de la gâche
       //récupère la configuration depuis l'API Web Nuki
-      $conf = nuki_smartlock->getConfig($eqLogic->getNukiWebId());
+      $conf = nukiSmartLock->getConfig($eqLogic->getNukiWebId());
       self::add_log("debug",'Config NUKI originale :' . print_r($conf, true));
       //update de la valeur pour l'unlatchDuration selon l'option sélectionnée (sur le widget ou via scénario)
       $conf['advancedConfig']['unlatchDuration'] = $_options['select'];
       self::add_log("debug", 'Config MODIFIEE (unlatch duration) :' . print_r($conf['advancedConfig'], true));
       //$arr = array($this->getConfiguration('request0') => $this->getConfiguration('requestValue0'),$this->getConfiguration('request1') => $this->getConfiguration('requestValue1'));
-      nuki_smartlock::callWeb('smartlock/' . $eqLogic->getNukiWebId() . '/advanced/config', 'post', $conf['advancedConfig']);
+      nukiSmartLock::callWeb('smartlock/' . $eqLogic->getNukiWebId() . '/advanced/config', 'post', $conf['advancedConfig']);
     } else {
       if ($this->getLogicalId() != 'refresh') {
         
         if ($this->type == 'action') {
         
-          $result = nuki_smartlock::callBridge('lockAction?nukiId=' . $eqLogic->getLogicalId() . '&action=' . $this->getConfiguration('request') . '&noWait=1&');
+          $result = nukiSmartLock::callBridge('lockAction?nukiId=' . $eqLogic->getLogicalId() . '&action=' . $this->getConfiguration('request') . '&noWait=1&');
         }
       }
-      nuki_smartlock::updateValues();
+      nukiSmartLock::updateValues();
     }
   }
 }

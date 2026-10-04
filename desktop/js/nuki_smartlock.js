@@ -18,11 +18,11 @@ document.getElementById('eqlogictab').addEventListener('click', function(event) 
     handleDialogClick(event, {
         '#btLogsLock': [
             'Logs Serrures',
-            `index.php?v=d&plugin=nuki_smartlock&modal=logs&id=${nukiWebId}`
+            `index.php?v=d&plugin=nukiSmartLock&modal=logs&id=${nukiWebId}`
         ],
         '#btAuthLock': [
             'Autorisations Serrure',
-            `index.php?v=d&plugin=nuki_smartlock&modal=auth&id=${nukiWebId}`
+            `index.php?v=d&plugin=nukiSmartLock&modal=auth&id=${nukiWebId}`
         ]
     });
 });
@@ -35,11 +35,11 @@ document.querySelector('.eqLogicThumbnailContainer').addEventListener('click', f
     handleDialogClick(event, {
         '#btLogs': [
             'Logs Serrures',
-            'index.php?v=d&plugin=nuki_smartlock&modal=logs&id=all'
+            'index.php?v=d&plugin=nukiSmartLock&modal=logs&id=all'
         ],
         '#btAuth': [
             'Autorisations Serrures',
-            'index.php?v=d&plugin=nuki_smartlock&modal=auth&id=all'
+            'index.php?v=d&plugin=nukiSmartLock&modal=auth&id=all'
         ]
     });
 });
@@ -51,7 +51,7 @@ document.getElementById('eqlogictab').addEventListener('change', function(event)
         // Image
         if (target.value) {
             document.getElementById('nukiTypeImg').src =
-                `plugins/nuki_smartlock/core/config/devices/${target.value}.png`;
+                `plugins/nukiSmartLock/core/config/devices/${target.value}.png`;
         }
 
         // Affichage boutons
@@ -66,7 +66,7 @@ document.getElementById('eqlogictab').addEventListener('change', function(event)
 function searchnukiDevices() {
    domUtils.ajax({
 	type: "POST",
-	url: "plugins/nuki_smartlock/core/ajax/nuki_smartlock.ajax.php",
+	url: "plugins/nukiSmartLock/core/ajax/nukiSmartLock.ajax.php",
 	data: {
 		action: "searchnukiDevices"
 	},

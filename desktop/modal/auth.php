@@ -23,7 +23,7 @@ if (!isConnect('admin')) {
   </thead>
   <tbody>
     <?php
-    $auths = nuki_smartlock::getAuths(init('id'));
+    $auths = nukiSmartLock::getAuths(init('id'));
     $authTypes = array(
       '0' => 'Application',
       '1' => 'Bridge',
@@ -52,7 +52,7 @@ if (!isConnect('admin')) {
     $keypads = [];
 
     foreach ($auths as $auth) {
-      $eqLogic = nuki_smartlock::byNukiWebId($auth['smartlockId']);
+      $eqLogic = nukiSmartLock::byNukiWebId($auth['smartlockId']);
 
       if (is_object($eqLogic)) {
         $link = $eqLogic->getLinkToConfiguration();
@@ -203,7 +203,7 @@ if (!isConnect('admin')) {
       eqid = ligne.dataset.eqid;
       domUtils.ajax({
         type: 'POST',
-        url: 'plugins/nuki_smartlock/core/ajax/nuki_smartlock.ajax.php',
+        url: 'plugins/nukiSmartLock/core/ajax/nukiSmartLock.ajax.php',
         data: {
           action: 'authDelete',
           auth: authid,
@@ -232,7 +232,7 @@ if (!isConnect('admin')) {
 
         const eqlogicId = option.dataset.eqlogicId;
 
-        url = `index.php?v=d&p=nuki_smartlock&m=nuki_smartlock&id=${eqlogicId}`;
+        url = `index.php?v=d&p=nukiSmartLock&m=nukiSmartLock&id=${eqlogicId}`;
       }
 
       const nom = document.getElementById('name').value.trim();
@@ -260,7 +260,7 @@ if (!isConnect('admin')) {
 
       domUtils.ajax({
         type: 'POST',
-        url: 'plugins/nuki_smartlock/core/ajax/nuki_smartlock.ajax.php',
+        url: 'plugins/nukiSmartLock/core/ajax/nukiSmartLock.ajax.php',
         data: {
           action: 'authPin',
           name: nom,
