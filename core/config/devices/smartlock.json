@@ -1,0 +1,247 @@
+{
+  "commands": [
+    {
+      "name": "Etat",
+      "type": "info",
+      "subtype": "numeric",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "state"
+      },
+      "logicalId": "state"
+    },
+    {
+      "name": "Etat Binaire (Verrouillée)",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "display": {
+        "generic_type": "LOCK_STATE",
+        "showNameOndashboard": 0,
+        "showNameOnmobile": 0
+      },
+      "template": {
+        "dashboard": "lock",
+        "mobile": "lock"
+      },
+      "configuration": {
+        "request": "statebinary"
+      },
+      "logicalId": "statebinary"
+    },
+    {
+      "name": "Etat Homekit",
+      "type": "info",
+      "subtype": "numeric",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "statekit"
+      },
+      "logicalId": "statekit"
+    },
+    {
+      "name": "Nom Etat",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "state_name"
+      },
+      "logicalId": "state_name"
+    },
+    {
+      "name": "Firmware",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "firmware"
+      },
+      "logicalId": "firmware"
+    },
+    {
+      "name": "Batterie du Keypad Critique",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "keypad_battery_critical"
+      },
+      "logicalId": "keypad_battery_critical"
+    },
+    {
+      "name": "Batterie Critique",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "battery_critical"
+      },
+      "logicalId": "battery_critical"
+    },
+    {
+      "name": "Batterie en charge",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "battery_charging"
+      },
+      "logicalId": "battery_charging"
+    },
+    {
+      "name": "Batterie",
+      "type": "info",
+      "subtype": "numeric",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "battery_level",
+        "unite": "%"
+      },
+      "logicalId": "battery"
+    },
+    {
+      "name": "Déverrouiller",
+      "type": "action",
+      "subtype": "other",
+      "display": {
+        "generic_type": "LOCK_OPEN",
+        "icon": "<i class=\"fas fa-unlock\"><\/i>"
+      },
+      "configuration": {
+        "request": "1"
+      },
+      "isVisible": 1,
+      "logicalId": "unlock"
+    },
+    {
+      "name": "Verrouiller",
+      "type": "action",
+      "subtype": "other",
+      "display": {
+        "generic_type": "LOCK_CLOSE",
+        "icon": "<i class=\"fas fa-lock\"><\/i>"
+      },
+      "configuration": {
+        "request": "2"
+      },
+      "isVisible": 1,
+      "logicalId": "lock"
+    },
+    {
+      "name": "Gache",
+      "type": "action",
+      "subtype": "other",
+      "configuration": {
+        "request": "3"
+      },
+      "isVisible": 0,
+      "logicalId": "unlatch"
+    },
+    {
+      "name": "Lock'n'go",
+      "type": "action",
+      "subtype": "other",
+      "configuration": {
+        "request": "4"
+      },
+      "isVisible": 0,
+      "logicalId": "lockngo"
+    },
+    {
+      "name": "Lock'n'go gache",
+      "type": "action",
+      "subtype": "other",
+      "configuration": {
+        "request": "5"
+      },
+      "isVisible": 0,
+      "logicalId": "lockngo_unlatch"
+    },
+    {
+      "name": "Rafraichir",
+      "type": "action",
+      "subtype": "other",
+      "display": {
+        "generic_type": "DONT"
+      },
+      "configuration": {
+        "request": "refresh"
+      },
+      "isVisible": 1,
+      "logicalId": "refresh"
+    },
+    {
+      "name": "Autorisation - Activation",
+      "type": "action",
+      "subtype": "select",
+      "display": {
+        "generic_type": "DONT"
+      },
+      "configuration": {
+        "request": "enabled",
+        "requestValue": true,
+        "listValue": ""
+      },
+      "isVisible": 0,
+      "logicalId": "authEnable"
+    },
+    {
+      "name": "Autorisation - Désactivation",
+      "type": "action",
+      "subtype": "select",
+      "display": {
+        "generic_type": "DONT"
+      },
+      "configuration": {
+        "request": "enabled",
+        "requestValue": false,
+        "listValue": ""
+      },
+      "isVisible": 0,
+      "logicalId": "authDisable"
+    },
+    {
+      "name": "Autorisation - Commande Avancée",
+      "type": "action",
+      "subtype": "message",
+      "display": {
+        "generic_type": "DONT",
+        "title_placeholder": "Arguments",
+        "message_disable": 1
+      },
+      "isVisible": 0,
+      "logicalId": "authMessage"
+    },
+    {
+      "name": "Dernier Trigger",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "logicalId": "trigger"
+    },
+    {
+      "name": "Temps ouverture gache (en sec)",
+      "type": "action",
+      "subtype": "select",
+      "display": {
+        "generic_type": "DONT"
+      },
+      "configuration": {
+        "listValue": "1|1;3|3;5|5;7|7;10|10;15|15;20|20;30|30"
+      },
+      "isVisible": 1,
+      "logicalId": "unlatch_duree"
+    }
+  ]
+}

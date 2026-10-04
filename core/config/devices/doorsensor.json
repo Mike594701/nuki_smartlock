@@ -1,0 +1,70 @@
+{
+  "commands": [
+    {
+      "name": "Etat",
+      "type": "info",
+      "subtype": "numeric",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "state"
+      },
+      "logicalId": "state"
+    },
+    {
+      "name": "Etat Binaire (Verrouillé)",
+      "type": "info",
+      "subtype": "binary",
+      "isVisible": 1,
+      "isHistorized": 0,
+      "display": {
+        "generic_type": "OPENING",
+        "showNameOndashboard": 0,
+        "showNameOnmobile": 0
+      },
+      "template": {
+        "dashboard": "door",
+        "mobile": "door"
+      },
+      "configuration": {
+        "request": "statebinary"
+      },
+      "logicalId": "statebinary"
+    },
+    {
+      "name": "Nom Etat",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "state_name"
+      },
+      "logicalId": "state_name"
+    },
+    {
+      "name": "Rafraichir",
+      "type": "action",
+      "subtype": "other",
+      "display": {
+        "generic_type": "DONT"
+      },
+      "configuration": {
+        "request": "refresh"
+      },
+      "isVisible": 1,
+      "logicalId": "refresh"
+    },
+    {
+      "name": "Firmware",
+      "type": "info",
+      "subtype": "string",
+      "isVisible": 0,
+      "isHistorized": 0,
+      "configuration": {
+        "request": "firmware"
+      },
+      "logicalId": "firmware"
+    }
+  ]
+}

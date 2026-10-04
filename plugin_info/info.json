@@ -1,0 +1,17 @@
+{
+    "id": "nuki_smartlock",
+    "name": "Nuki Smartlock",
+    "description": "Ce plugin permet de piloter les serrures connectées Nuki à l'aide du bridge. Il permet aussi de configurer le bridge en mode push. Il permet également de visualiser les logs de votre plateforme Nuki et gérer les partages d'accès.",
+    "licence": "AGPL",
+    "author": "OZAER Michaël",
+    "require": "4.5",
+    "category": "security",
+    "language": ["fr_FR"],
+    "compatibility": [
+        "smart",
+        "rpi",
+        "v4"
+    ],
+    "changelog": "https://lunarok.github.io/jeedom_docs/plugins/nuki_smartlock/changelog.html",
+    "documentation": "https://lunarok.github.io/jeedom_docs/plugins/nuki_smartlock/"
+}
