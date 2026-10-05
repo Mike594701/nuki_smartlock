@@ -1,4 +1,3 @@
-
 function handleDialogClick(event, dialogs) {
     const target = event.target;
     for (const [selector, [title, url]] of Object.entries(dialogs)) {
@@ -12,7 +11,6 @@ function handleDialogClick(event, dialogs) {
         }
     }
 }
-
 document.getElementById('eqlogictab').addEventListener('click', function(event) {
     const nukiWebId = document.querySelector( '.eqLogicAttr[data-l1key="configuration"][data-l2key="nukiWebId"]')?.textContent.trim();
     handleDialogClick(event, {
@@ -26,7 +24,6 @@ document.getElementById('eqlogictab').addEventListener('click', function(event) 
         ]
     });
 });
-
 document.querySelector('.eqLogicThumbnailContainer').addEventListener('click', function(event) {
     const target = event.target;
     if (target.closest('#bt_syncEqLogic')) {
@@ -61,8 +58,6 @@ document.getElementById('eqlogictab').addEventListener('change', function(event)
         document.getElementById('btAuthLock').style.display = hide ? 'none' : '';
     }
 });
-
-
 function searchnukiDevices() {
    domUtils.ajax({
 	type: "POST",
@@ -91,9 +86,6 @@ function searchnukiDevices() {
 	}
 	});
 }
-
-
-
 function addCmdToTable(_cmd) {
     if (!isset(_cmd)) {
         var _cmd = { configuration: {} };
