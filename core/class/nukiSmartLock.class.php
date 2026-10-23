@@ -112,32 +112,33 @@ class nukiSmartLock extends eqLogic{
     self::updateValues();
     }
   /**
-   * Vérifie si une erreur peut être loguée.
-   * Retourne true au maximum une fois toutes les 24h.
-   */
-  private static function canLogError($key, $delay = 86400) {
+    * Vérifie si une erreur peut être loguée.
+    * Retourne true au maximum une fois toutes les 24h.
+    */
+    private static function canLogError($key, $delay = 86400) {
 
-      $lastError = config::byKey($key, 'nukiSmartLock', 0);
+        $lastError = config::byKey($key, 'nukiSmartLock', 0);
 
-      if ((time() - intval($lastError)) >= $delay) {
-          config::save($key, time(), 'nukiSmartLock');
-          return true;
-      }
+        if ((time() - intval($lastError)) >= $delay) {
+            config::save($key, time(), 'nukiSmartLock');
+            return true;
+        }
 
-      return false;
-  }
-
-  /**
-   * Réinitialise un flag d'erreur.
-   */
-  private static function resetError($key) {
-      config::remove($key, 'nukiSmartLock');
-  }
-  private static function logErrorOnce($key, $message, $delay = 86400) {
-    if (self::canLogError($key, $delay)) {
-        self::add_log('error', $message);
+        return false;
     }
-}
+
+    /**
+     * Réinitialise un flag d'erreur.
+    */
+    private static function resetError($key) {
+      self::add_log('info', "Reset erreur config: " . $message);
+        config::remove($key, 'nukiSmartLock');
+    }
+    private static function logErrorOnce($key, $message, $delay = 86400) {
+      if (self::canLogError($key, $delay)) {
+          self::add_log('error', $message);
+      }
+  }
 
   public static function callBridge($_uri) {
 
