@@ -110,7 +110,34 @@ class nukiSmartLock extends eqLogic{
 
   public static function cron($_eqLogic_id = null){
     self::updateValues();
+    }
+  /**
+   * Vérifie si une erreur peut être loguée.
+   * Retourne true au maximum une fois toutes les 24h.
+   */
+  private static function canLogError($key, $delay = 86400) {
+
+      $lastError = config::byKey($key, 'nukiSmartLock', 0);
+
+      if ((time() - intval($lastError)) >= $delay) {
+          config::save($key, time(), 'nukiSmartLock');
+          return true;
+      }
+
+      return false;
   }
+
+  /**
+   * Réinitialise un flag d'erreur.
+   */
+  private static function resetError($key) {
+      config::remove($key, 'nukiSmartLock');
+  }
+  private static function logErrorOnce($key, $message, $delay = 86400) {
+    if (self::canLogError($key, $delay)) {
+        self::add_log('error', $message);
+    }
+}
 
   public static function callBridge($_uri) {
 
@@ -155,12 +182,12 @@ class nukiSmartLock extends eqLogic{
     }
 
     self::add_log("debug", 'Bridge ' . $url . ' : ' . $return);
-
     if ($return === false || trim($return) === '') {
-        self::add_log("error", "Réponse vide du Bridge");
+        self::logErrorOnce('last_bridge_error', 'callBridge :Réponse vide du Bridge' );
         return null;
     }
 
+self::resetError('last_bridge_error');
     // Décodage JSON sécurisé
     $json = json_decode(trim($return), true);
     if (!is_array($json)) {
@@ -535,9 +562,11 @@ class nukiSmartLock extends eqLogic{
     $nukis = self::getBridgeStatus();
 
     if (!is_array($nukis)) {
-        self::add_log('error', 'updateValues : réponse invalide du Bridge');
-        return;
+      self::logErrorOnce( 'last_updatevalues_error', 'updateValues : réponse invalide du Bridge' );
+      return;
     }
+
+    self::resetError('last_updatevalues_error');
 
     self::add_log('debug', 'BridgeStatus : ' . print_r($nukis, true));
 
@@ -671,9 +700,11 @@ class nukiSmartLock extends eqLogic{
     $nukis = self::getBridgeStatus();
 
     if (!is_array($nukis)) {
-      self::add_log('error', 'searchnukiDevices : réponse invalide du Bridge');
-      return;
-    }
+      self::logErrorOnce( 'searchnukidevices_error','searchnukiDevices : réponse invalide du Bridge');
+    return;
+}
+
+self::resetError('searchnukidevices_error');
 
     self::add_log("debug",'fichier : ' . json_encode($nukis));
 
